@@ -20,7 +20,7 @@ app.use(express.json());
 app.use("/api/auth", router);
 
 // Setting the port for the server to listen on
-const PORT = 5000;
+const PORT = 5001;
 
 // Connecting to the database and starting the server
 connectDb().then(() => {

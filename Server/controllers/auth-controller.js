@@ -34,7 +34,7 @@ const register = async (req, res) => {
         res.status(200).json({ msg: userCreated });
     } catch (error) {
         // Handling internal server errors by sending a response with a 400 status code and a generic error message
-        res.status(400).json("Internal server error");
+        res.status(400).json("Internal server error !");
     }
 };
 
