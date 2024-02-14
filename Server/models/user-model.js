@@ -25,6 +25,14 @@ const userSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false,
+    },
+    otp: {
+        type: String,
+        required: true
+    },
+    verified: {
+        type: Boolean,
+        default: false,
     }
 });
 

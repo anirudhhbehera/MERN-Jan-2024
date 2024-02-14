@@ -10,6 +10,6 @@ const authcontrollers = require("../controllers/auth-controller");
 // Defining routes and their corresponding controller functions
 router.route("/").get(authcontrollers.home); // GET request to the root route ("/") handled by the home controller function
 router.route("/register").post(authcontrollers.register); // POST request to the "/register" route handled by the register controller function
-
+router.route("/verify").post(authcontrollers.verify);
 // Exporting the router to be used in other parts of the application
 module.exports = router;    
