@@ -12,14 +12,14 @@ const sendOTP = async (email, otp) => {
             port:587,
             auth: {
                 user: 'anirudhhbehera@gmail.com',
-                pass: 'N4AvmagsMZXDqTLR'
+                pass: process.env.Smtp_pass
             }
         });
         const mailOptions = {
             from: 'no-reply@anirudhh.com',
             to: email,
             subject: 'OTP Verification',
-            text: `Your OTP varification code ${otp}`
+            text: `Your OTP verification code is ${otp}`
         };
         await transporter.sendMail(mailOptions);
     } catch (error) {
