@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt"); //This line imports the bcrypt library, which provides functions for hashing passwords securely.
 // Importing the User model from the ../models/user-model file
 const User = require("../models/user-model");
-const { generateOTP, sendOTP } = require('./otp-utils');
+const { generateOTP, sendOTP } = require("./otp-utils");
 
 // Controller function for handling requests to the home route
 const home = async (req, res) => {
@@ -34,18 +34,16 @@ const register = async (req, res) => {
       email,
       phone,
       password: hashedPassword,
-      otp
+      otp,
     });
     await sendOTP(email, otp);
 
     // Sending a response with a 201 status code and the created user object
-    res
-      .status(201)
-      .json({
-        msg: "Registration Successful",
-        token: await userCreated.generateToken(),
-        userId: userCreated._id.toString(),
-      });
+    res.status(201).json({
+      msg: "Registration Successful",
+      token: await userCreated.generateToken(),
+      userId: userCreated._id.toString(),
+    });
     //   res.redirect(`/verify?email=${email}`);
   } catch (error) {
     // Handling internal server errors by sending a response with a 400 status code and a generic error message
@@ -53,24 +51,67 @@ const register = async (req, res) => {
   }
 };
 const verify = async (req, res) => {
-    try {
-        const { otp } = req.body;
-        const email = req.query.email;
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(404).json({ msg: 'User not found' });
-        }
-        if (user.otp !== otp) {
-            return res.status(401).json({ msg: 'Invalid OTP' });
-        }
-        user.verified = true;
-        await user.save();
-        res.json({ msg: 'OTP verified successfully' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ msg: 'Internal server error' });
+  try {
+    const { otp } = req.body;
+    const email = req.query.email;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
     }
-  };
-
+    if (!user.verified) {
+      if (user.otp !== otp) {
+        return res.status(401).json({ msg: "Invalid OTP" });
+      }
+      user.verified = true;
+      await user.save();
+      res.status(200).json({
+        message: "OTP verified successfully",
+        token: await user.generateToken(),
+        userId: user._id.toString(),
+      });
+    }
+    else{
+      return res.status(201).json({ msg: "user is already verified !" });
+    }
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Internal server error" });
+  }
+};
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const userExist = await User.findOne({ email });
+    if (!userExist) {
+      return res.status(400).json({ msg: "User not registered" });
+    }
+    const isPasswordValid = await bcrypt.compare(password, userExist.password);
+    if (isPasswordValid) {
+      if (userExist.verified) {
+        res.status(200).json({
+          message: "Login Successful",
+          token: await userExist.generateToken(),
+          userId: userExist._id.toString(),
+        });
+      } else {
+        const otp = generateOTP();
+        await sendOTP(email, otp);
+        userExist.otp = otp;
+        await userExist.save();
+        // res.status(200).json({
+        //   message: "Login verification Successful",
+        //   token: await userExist.generateToken(),
+        //   userId: userExist._id.toString(),
+        // });
+        //   res.redirect(`/verify?email=${email}`);
+      }
+    } else {
+      res.status(401).json({ message: "Invalid email or password " });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 // Exporting the home and register controller functions to be used in other parts of the application
-module.exports = { home, register, verify };
+module.exports = { home, register, verify, login };
