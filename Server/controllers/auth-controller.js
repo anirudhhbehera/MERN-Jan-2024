@@ -99,12 +99,12 @@ const login = async (req, res) => {
         await sendOTP(email, otp);
         userExist.otp = otp;
         await userExist.save();
-        // res.status(200).json({
-        //   message: "Login verification Successful",
-        //   token: await userExist.generateToken(),
-        //   userId: userExist._id.toString(),
-        // });
-        //   res.redirect(`/verify?email=${email}`);
+        res.status(200).json({
+          message: "Login verification Successful",
+          token: await userExist.generateToken(),
+          userId: userExist._id.toString(),
+        });
+          // res.redirect(`/verify?email=${email}`);
       }
     } else {
       res.status(401).json({ message: "Invalid email or password " });
