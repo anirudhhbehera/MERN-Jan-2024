@@ -12,12 +12,14 @@ const router = require("./router/auth-router");
 
 // Importing the connectDb function from the utils/db module
 const connectDb = require("./utils/db");
+const errorMiddleware = require("./middlewares/error-middleware");
 
 // Middleware to parse incoming JSON requests
 app.use(express.json());
 
 // Mounting the authentication router at the "/api/auth" endpoint
 app.use("/api/auth", router);
+app.use(errorMiddleware);
 
 // Setting the port for the server to listen on
 const PORT = 5000;
