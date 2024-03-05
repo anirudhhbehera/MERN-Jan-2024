@@ -7,7 +7,7 @@ export const Navbar=()=>{
             <header>
                 <div className="container">
                     <div className="logo-brand">
-                        <a href="/">Ani Tech</a>
+                        <a href="/">AniTech</a>
                     </div>
                     <nav>
                         <ul>
