@@ -7,6 +7,8 @@ import { Service } from './pages/Service';
 import { Register } from './pages/Register';
 import { Login } from './pages/Login';
 import { Navbar } from './components/Navbar';
+import { Footer } from './components/Footer';
+
 
 const App = () => {
   return (
@@ -21,6 +23,7 @@ const App = () => {
         <Route path="/register" element={<Register/>} /> 
         <Route path="/login" element={<Login/>} /> 
       </Routes>
+      <Footer></Footer>
     </BrowserRouter>
     </>
   )

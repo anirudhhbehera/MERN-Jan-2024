@@ -17,6 +17,7 @@ export const Navbar=()=>{
                             <li><NavLink to="/service">Service</NavLink></li>
                             <li><NavLink to="/register">Register</NavLink></li>
                             <li><NavLink to="/login">Login</NavLink></li>
+                            <li><a href="https://github.com/anirudhhbehera" target="_blank">Github</a></li>
                         </ul>
                     </nav>
                 </div>
