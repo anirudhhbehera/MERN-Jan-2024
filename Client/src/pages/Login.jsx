@@ -1,6 +1,12 @@
 import { useState } from "react";
+import { Eye, EyeOff } from 'lucide-react';
+
 
 export const Login=()=>{
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
     const [user, setUser] = useState({
         // username: "",
         email: "",
@@ -74,12 +80,30 @@ export const Login=()=>{
                   <div>
                     <label htmlFor="password">password</label>
                     <input
-                      type="password"
+                      type={isPasswordVisible ? 'text' : 'password'}
                       name="password"
                       value={user.password}
                       onChange={handleInput}
                       placeholder="password"
                     />
+                    <button
+                    onClick={togglePasswordVisibility}
+                    style={{
+                      cursor: 'pointer',
+                      margin:'0',
+                      background: 'none',
+                      border: 'none',
+                      // position: 'absolute',
+                      right: '0px',
+                      // top: '50%',
+                      // transform: 'translateY(-50%)',
+                    }}
+                    aria-label="Toggle password visibility"
+                  >
+                    {isPasswordVisible ? <Eye size={20} /> : <EyeOff size={20} />}
+                  </button>
+                   
+                     
                   </div>
                   <br />
                   <button type="submit" className="btn btn-submit">
